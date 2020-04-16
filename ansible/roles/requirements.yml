@@ -1,0 +1,21 @@
+---
+- robertdebock.bootstrap
+- geerlingguy.repo-epel
+- geerlingguy.repo-remi
+#- linuxhq.ius
+#- dev-sec.os-hardening
+#- dev-sec.ssh-hardening
+- geerlingguy.nfs
+- geerlingguy.ntp
+
+- geerlingguy.postfix
+- singleplatform-eng.users
+- arillso.logrotate
+- geerlingguy.haproxy
+- geerlingguy.htpasswd
+- geerlingguy.apache
+- geerlingguy.apache-php-fpm
+- geerlingguy.php
+- geerlingguy.php-versions
+- geerlingguy.php-pgsql
+- ANXS.postgresql

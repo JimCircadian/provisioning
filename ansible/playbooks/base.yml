@@ -1,0 +1,24 @@
+---
+- name:     Set hostname to "{{ base_hostname }}"
+  hostname:
+    name: "{{ base_hostname }}"
+- name:     Install default packages
+  package:
+    name: "{{ item }}"
+    state:  installed
+  with_items: "{{ base_packages }}"
+- include_role: name=robertdebock.bootstrap
+- include_role: name=singleplatform-eng.users
+- include_role: name=geerlingguy.repo-epel
+- include_role: name=geerlingguy.repo-remi
+- include_role: name=geerlingguy.ntp
+- include_role: name=arillso.logrotate
+
+# # TODO: Use caution to bring these settings in, ensure functionality works first
+# # then review their configurations
+# # TODO: SETTINGS DOES NOT WORK https://repo.ius.io/ius-release-el7.rpm REQUIRED
+# #  - linuxhq.ius
+# #  - dev-sec.os-hardening
+# #  - dev-sec.ssh-hardening
+# #  - geerlingguy.nfs
+#    - geerlingguy.postfix

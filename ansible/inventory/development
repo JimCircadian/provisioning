@@ -1,0 +1,12 @@
+[data]
+data.development
+
+[web]
+web.development
+
+[development:children]
+data
+web
+
+[development:vars]
+ansible_user=root

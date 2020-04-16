@@ -1,0 +1,12 @@
+---
+- hosts:  host
+  tasks:
+    - include_tasks:  base.yml
+    - include_role:   name=libvirtd
+    - include_role:   name=geerlingguy.haproxy
+
+  vars_files:
+    - ../environments/all.yml
+    - ../environments/host.yml
+    - "../environments/{{ env }}/all.yml"
+    - "../environments/{{ env }}/host.yml"

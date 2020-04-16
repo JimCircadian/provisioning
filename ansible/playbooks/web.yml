@@ -1,0 +1,14 @@
+---
+- hosts:  web
+  tasks:
+    - include_tasks:  base.yml
+    - include_role:   name=geerlingguy.apache
+    - include_role:   name=geerlingguy.apache-php-fpm
+    - include_role:   name=geerlingguy.php
+    - include_role:   name=geerlingguy.php-versions
+    - include_role:   name=geerlingguy.php-pgsql
+  vars_files:
+    - ../environments/all.yml
+    - ../environments/web.yml
+    - "../environments/{{ env }}/all.yml"
+    - "../environments/{{ env }}/web.yml"

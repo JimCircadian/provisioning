@@ -1,0 +1,10 @@
+---
+- hosts:  data
+  tasks:
+    - include_tasks:  base.yml
+    - include_role:   name=ANXS.postgresql
+  vars_files:
+    - ../environments/all.yml
+    - ../environments/data.yml
+    - "../environments/{{ env }}/all.yml"
+    - "../environments/{{ env }}/data.yml"

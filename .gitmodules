@@ -1,0 +1,3 @@
+[submodule "ansible/roles/libvirtd"]
+	path = ansible/roles/libvirtd
+	url = https://github.com/JimCircadian/ansible-role-libvirtd

@@ -1,0 +1,16 @@
+[host]
+vps
+
+[data]
+data.production
+
+[web]
+web.production
+
+[staging:children]
+host
+data
+web
+
+[staging:vars]
+ansible_user=root

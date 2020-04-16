@@ -1,0 +1,17 @@
+# A physical staging server, reminiscent of the production VPS
+[host]
+staging-host
+
+[data]
+staging-data
+
+[web]
+staging-web
+
+[staging:children]
+host
+data
+web
+
+[staging:vars]
+ansible_user=root
