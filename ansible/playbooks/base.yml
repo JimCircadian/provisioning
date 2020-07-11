@@ -2,15 +2,23 @@
 - name:     Set hostname to "{{ base_hostname }}"
   hostname:
     name: "{{ base_hostname }}"
+
 - name:     Install default packages
   package:
     name: "{{ item }}"
     state:  installed
   with_items: "{{ base_packages }}"
+
+- name:     Setup open ports
+  firewalld:
+    port:   "{{ item }}"
+    state:  enabled
+    permanent:  yes
+  with_items: "{{ base_firewall_ports }}"
+
 - include_role: name=robertdebock.bootstrap
 - include_role: name=singleplatform-eng.users
 - include_role: name=geerlingguy.repo-epel
-- include_role: name=geerlingguy.repo-remi
 - include_role: name=geerlingguy.ntp
 - include_role: name=arillso.logrotate
 

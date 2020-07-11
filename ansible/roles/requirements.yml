@@ -11,7 +11,7 @@
 - geerlingguy.postfix
 - singleplatform-eng.users
 - arillso.logrotate
-- geerlingguy.haproxy
+- uoi-io.haproxy
 - geerlingguy.htpasswd
 - geerlingguy.apache
 - geerlingguy.apache-php-fpm

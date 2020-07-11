@@ -2,13 +2,20 @@
 - hosts:  web
   tasks:
     - include_tasks:  base.yml
+    - include_role:   name=geerlingguy.repo-remi
     - include_role:   name=geerlingguy.apache
+      tags: web
     - include_role:   name=geerlingguy.apache-php-fpm
+      tags: web
     - include_role:   name=geerlingguy.php
+      tags: web
     - include_role:   name=geerlingguy.php-versions
+      tags: web
     - include_role:   name=geerlingguy.php-pgsql
+      tags: web
   vars_files:
     - ../environments/all.yml
     - ../environments/web.yml
     - "../environments/{{ env }}/all.yml"
     - "../environments/{{ env }}/web.yml"
+    - "../environments/{{ env }}/vault.yml"

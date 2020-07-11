@@ -8,3 +8,4 @@
     - ../environments/data.yml
     - "../environments/{{ env }}/all.yml"
     - "../environments/{{ env }}/data.yml"
+    - "../environments/{{ env }}/vault.yml"
