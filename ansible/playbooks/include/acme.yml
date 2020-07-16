@@ -1,0 +1,108 @@
+---
+- name: "Create {{ acme_root_dir }}"
+  file:
+    path: "{{ acme_root_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  tags: acme
+
+- name: "Create required directories in {{ acme_root_dir }}"
+  file:
+    path: "{{ acme_root_dir }}/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode:  0711
+  with_items:
+  - account
+  - cert
+  - csr
+  - key
+  tags: acme
+
+- name: "Generate a ACME account key"
+  shell: "if [ ! -f {{ acme_account_key_file }} ]; then openssl genrsa 4096 | sudo tee {{ acme_account_key_file }}; fi"
+  tags: acme
+
+- name: "Create .well-known/acme-challenge directory"
+  file:
+    path: /var/www/html/.well-known/acme-challenge
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  tags: acme
+
+- name: Generate ACME private key
+  shell: "if [ ! -f {{ acme_root_dir }}/key/{{ domain.name }}.key ]; then openssl genrsa 4096 | sudo tee {{ acme_root_dir }}/key/{{ domain.name }}.key; fi"
+  tags: acme
+
+- name: Ensure private private key
+  file:
+    path:   "{{ acme_root_dir }}/key/{{ domain.name }}.key"
+    owner:  root
+    group:  root
+    mode:   0600
+  tags: acme
+
+- name: Put in place SSL configuration
+  template:
+    dest:   "{{ acme_root_dir }}/{{ domain.name }}.cnf"
+    src:    acme.j2
+  tags: acme
+
+- name: Generate ACME CSR
+  shell: "openssl req -new -sha256 -key {{ acme_root_dir }}/key/{{ domain.name }}.key -subj \"/CN={{ domain.name }}\" -reqexts SAN -config {{ acme_root_dir }}/{{ domain.name }}.cnf | sudo tee {{ acme_root_dir }}/csr/{{ domain.name }}.csr"
+  args:
+    executable: /bin/bash
+    creates: "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
+  tags: acme
+
+- name: "Create a challenge for {{ domain.name }} using a account key from a variable."
+  acme_certificate:
+    acme_directory: "{{ acme_directory }}"
+    acme_version:   "{{ acme_version }}"
+    account_email:  "{{ acme_email }}"
+    account_key_src: "{{ acme_account_key_file }}"
+    challenge: "{{ acme_challenge_type }}"
+    csr:      "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
+    dest:     "{{ acme_root_dir }}/cert/{{ domain.name }}.crt"
+    fullchain_dest:     "{{ acme_root_dir }}/cert/fullchain-{{ domain.name }}.crt"
+    remaining_days: 91
+    terms_agreed: 1
+  register: acme_challenge
+  tags: acme
+
+- copy:
+    dest:    "/var/www/html/{{ acme_challenge['challenge_data'][item['key']]['http-01']['resource'] }}"
+    content: "{{ acme_challenge['challenge_data'][item['key']]['http-01']['resource_value'] }}"
+  when:    acme_challenge is changed
+  with_dict:
+    - "{{ acme_challenge['challenge_data'] }}"
+  tags: acme
+
+- name: Let the challenge be validated and retrieve the cert and intermediate certificate
+  acme_certificate:
+    account_key_src: "{{ acme_account_key_file }}"
+    csr:     "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
+    dest:    "{{ acme_root_dir }}/cert/{{ domain.name }}.crt"
+    fullchain_dest: "{{ acme_root_dir }}/cert/fullchain-{{ domain.name }}.crt"
+    chain_dest:     "{{ acme_root_dir }}/cert/intermediate-{{ domain.name }}.crt"
+    data: "{{ acme_challenge }}"
+  tags: acme
+
+- name: Deploy certificates to their paths
+  shell:  "if [ ! -f {{ item.dest }} ]; then cat {{ item.sources|join(' ') }} >{{ item.dest }}; fi"
+  with_items: "{{ acme_outputs }}"
+  tags: acme
+
+- name: Restrict certificates deployed to their paths
+  file:
+    path:   "{{ item.dest }}"
+    owner:  root
+    group:  root
+    mode:   0600
+  with_items: "{{ acme_outputs }}"
+  tags: acme

@@ -15,9 +15,12 @@ def install_jekyll_site(ctx, path, dest):
     orig_path = os.getcwd()
     os.chdir(path)
 
-    buildcmd = "jekyll build"
+    buildcmd = "jekyll build --incremental"
     logging.debug("BUILD: {}".format(buildcmd))
     ctx.run(buildcmd)
+
+    if not dest.endswith('/'):
+        dest = "{}/".format(dest)
 
     clonecmd = "rsync -avhP --delete-delay {} {}".format("_site/", dest)
 

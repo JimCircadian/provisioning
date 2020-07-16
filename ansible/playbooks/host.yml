@@ -2,20 +2,28 @@
 - hosts:  host
   tasks:
     - include_tasks:  base.yml
+
     - include_role:   name=libvirtd
       tags: libvirtd
 
-    - blockinfile:
-        path:   "/etc/ssl/certs/{{ env }}.pem"
-        owner:  root
-        group:  root
-        mode:   0600
-        block:  "{{ vault_ssl_chain }}"
-        create: yes
-      tags: haproxy
+    # VMs are not registered via libvirt DHCP yet
+    - include_role:   name=uoi-io.haproxy
+      vars:
+        haproxy_frontend: "{{ http_frontend }}"
+
+    - name: Restart haproxy straight after haproxy http setup
+      command:  systemctl restart haproxy
+
+    - include_tasks: include/acme.yml
+      loop: "{{ acme_domains }}"
+      loop_control:
+        loop_var: domain
+      tags: acme
 
     - include_role:   name=uoi-io.haproxy
       tags: haproxy
+      vars:
+        haproxy_frontend: "{{ http_frontend + https_frontend }}"
 
   vars_files:
     - ../environments/all.yml

@@ -1,0 +1,12 @@
+[req]
+distinguished_name  = req_dn
+default_bits		    = 2048
+
+[req_dn]
+basicConstraints=CA:FALSE
+
+[SAN]
+subjectAltName=DNS:{{ domain.name }}
+{% for d in domain.subs %}
+subjectAltName=DNS:{{ d }}.{{ domain.name }}
+{% endfor %}
