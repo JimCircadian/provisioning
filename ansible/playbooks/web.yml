@@ -1,28 +1,8 @@
 ---
 - hosts:  web
   tasks:
-    - include_tasks:  base.yml
-    - include_role:   name=geerlingguy.repo-remi
-    - include_role:   name=geerlingguy.apache
-      tags: web
-    - include_role:   name=geerlingguy.apache-php-fpm
-      tags: web
-    - include_role:   name=geerlingguy.php
-      tags: web
-    - include_role:   name=geerlingguy.php-versions
-      tags: web
-    - include_role:   name=geerlingguy.php-pgsql
-      tags: web
-
-    - name: Created web directories
-      file:
-        path:   "{{ item.documentroot }}"
-        owner:  root
-        group:  root
-        state:  directory
-        mode:   0755
-      with_items: "{{ apache_vhosts }}"
-
+    - include_tasks:  include/base.yml
+    - include_tasks:  include/web.yml
   vars_files:
     - ../environments/all.yml
     - ../environments/web.yml

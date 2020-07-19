@@ -28,7 +28,7 @@
 
 - name: "Create .well-known/acme-challenge directory"
   file:
-    path: /var/www/html/.well-known/acme-challenge
+    path: "{{ domain.challenge }}/.well-known/acme-challenge"
     state: directory
     owner: root
     group: root
@@ -76,7 +76,7 @@
   tags: acme
 
 - copy:
-    dest:    "/var/www/html/{{ acme_challenge['challenge_data'][item['key']]['http-01']['resource'] }}"
+    dest:    "{{ domain.challenge }}/{{ acme_challenge['challenge_data'][item['key']]['http-01']['resource'] }}"
     content: "{{ acme_challenge['challenge_data'][item['key']]['http-01']['resource_value'] }}"
   when:    acme_challenge is changed
   with_dict:
@@ -85,7 +85,10 @@
 
 - name: Let the challenge be validated and retrieve the cert and intermediate certificate
   acme_certificate:
+    account_email:  "{{ acme_email }}"
     account_key_src: "{{ acme_account_key_file }}"
+    acme_directory: "{{ acme_directory }}"
+    acme_version:   "{{ acme_version }}"
     csr:     "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
     dest:    "{{ acme_root_dir }}/cert/{{ domain.name }}.crt"
     fullchain_dest: "{{ acme_root_dir }}/cert/fullchain-{{ domain.name }}.crt"

@@ -1,0 +1,18 @@
+---
+- hosts:  vps
+  tasks:
+  #  - include_tasks:  include/base.yml
+  #  - include_tasks:  include/data.yml
+  #  - include_tasks:  include/web.yml
+    - include_tasks:  include/proxy.yml
+
+  vars_files:
+    - ../environments/all.yml
+    - ../environments/data.yml
+    - ../environments/web.yml
+    - ../environments/proxy.yml
+    - "../environments/{{ env }}/all.yml"
+    - "../environments/{{ env }}/data.yml"
+    - "../environments/{{ env }}/web.yml"
+    - "../environments/{{ env }}/proxy.yml"
+    - "../environments/{{ env }}/vault.yml"

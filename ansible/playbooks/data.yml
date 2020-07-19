@@ -1,8 +1,8 @@
 ---
 - hosts:  data
   tasks:
-    - include_tasks:  base.yml
-    - include_role:   name=ANXS.postgresql
+    - include_tasks:  include/base.yml
+    - include_tasks:  include/data.yml
   vars_files:
     - ../environments/all.yml
     - ../environments/data.yml

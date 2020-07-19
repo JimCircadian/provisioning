@@ -16,6 +16,14 @@
     permanent:  yes
   with_items: "{{ base_firewall_ports }}"
 
+- name:     Enable firewall
+  service:
+    name:   firewalld
+    state:  started
+
+- name:     Reload firewall
+  command:  firewall-cmd --reload
+
 - include_role: name=robertdebock.bootstrap
 - include_role: name=singleplatform-eng.users
 - include_role: name=geerlingguy.repo-epel
