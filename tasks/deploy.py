@@ -15,7 +15,7 @@ def install_jekyll_site(ctx, path, dest):
     orig_path = os.getcwd()
     os.chdir(path)
 
-    buildcmd = "jekyll build --incremental"
+    buildcmd = "make build"
     logging.debug("BUILD: {}".format(buildcmd))
     ctx.run(buildcmd)
 
