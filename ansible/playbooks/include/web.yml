@@ -1,15 +1,12 @@
 ---
-- include_role:   name=geerlingguy.repo-remi
-- include_role:   name=geerlingguy.apache
-  tags: web
-- include_role:   name=geerlingguy.apache-php-fpm
-  tags: web
-- include_role:   name=geerlingguy.php
-  tags: web
-- include_role:   name=geerlingguy.php-versions
-  tags: web
-- include_role:   name=geerlingguy.php-pgsql
-  tags: web
+- import_role:   name=geerlingguy.repo-remi
+- import_role:   name=geerlingguy.apache
+- import_role:   name=geerlingguy.apache-php-fpm
+- import_role:   name=geerlingguy.php
+- import_role:   name=geerlingguy.php-versions
+- import_role:   name=geerlingguy.php-pgsql
+- import_role:   name=jimcircadian-isso
+  tags: isso
 
 - name: Created web directories
   file:

@@ -24,11 +24,11 @@
 - name:     Reload firewall
   command:  firewall-cmd --reload
 
-- include_role: name=robertdebock.bootstrap
-- include_role: name=singleplatform-eng.users
-- include_role: name=geerlingguy.repo-epel
-- include_role: name=geerlingguy.ntp
-- include_role: name=arillso.logrotate
+- import_role: name=robertdebock.bootstrap
+- import_role: name=singleplatform-eng.users
+- import_role: name=geerlingguy.repo-epel
+- import_role: name=geerlingguy.ntp
+- import_role: name=arillso.logrotate
 
 # # TODO: Use caution to bring these settings in, ensure functionality works first
 # # then review their configurations

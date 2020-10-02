@@ -1,11 +1,12 @@
 ---
 - hosts:  vps
   tasks:
-  #  - include_tasks:  include/base.yml
-  #  - include_tasks:  include/data.yml
-  #  - include_tasks:  include/web.yml
+    - include_tasks:  include/base.yml
+    - include_tasks:  include/data.yml
+    - include_tasks:  include/web.yml
+      tags: isso
     - include_tasks:  include/proxy.yml
-
+      tags: acme
   vars_files:
     - ../environments/all.yml
     - ../environments/data.yml

@@ -1,2 +1,2 @@
 ---
-- include_role:   name=ANXS.postgresql
+- import_role:   name=ANXS.postgresql

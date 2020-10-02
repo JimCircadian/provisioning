@@ -2,3 +2,4 @@ environments
 *.pyc
 venv/
 ansible/roles/libvirtd
+ansible/roles/jimcircadian-isso
