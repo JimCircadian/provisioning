@@ -70,7 +70,7 @@
     csr:      "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
     dest:     "{{ acme_root_dir }}/cert/{{ domain.name }}.crt"
     fullchain_dest:     "{{ acme_root_dir }}/cert/fullchain-{{ domain.name }}.crt"
-    remaining_days: 91
+    remaining_days: "{{ acme_days_remaining|default(14) }}"
     terms_agreed: 1
   register: acme_challenge
   tags: acme
@@ -94,6 +94,8 @@
     fullchain_dest: "{{ acme_root_dir }}/cert/fullchain-{{ domain.name }}.crt"
     chain_dest:     "{{ acme_root_dir }}/cert/intermediate-{{ domain.name }}.crt"
     data: "{{ acme_challenge }}"
+    remaining_days: "{{ acme_days_remaining|default(14) }}"
+    terms_agreed: 1
   tags: acme
 
 - name: Deploy certificates to their paths
