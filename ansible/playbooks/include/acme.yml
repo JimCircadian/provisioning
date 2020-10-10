@@ -39,22 +39,30 @@
   shell: "if [ ! -f {{ acme_root_dir }}/key/{{ domain.name }}.key ]; then openssl genrsa 4096 | sudo tee {{ acme_root_dir }}/key/{{ domain.name }}.key; fi"
   tags: acme
 
-- name: Ensure private private key
+- name: Ensure private private keys
   file:
-    path:   "{{ acme_root_dir }}/key/{{ domain.name }}.key"
+    path:   "{{ item }}"
     owner:  root
     group:  root
     mode:   0600
   tags: acme
+  with_items:
+    - "{{ acme_root_dir }}/key/{{ domain.name }}.key"
+    - "{{ acme_account_key_file }}"
 
 - name: Put in place SSL configuration
   template:
     dest:   "{{ acme_root_dir }}/{{ domain.name }}.cnf"
     src:    acme.j2
+    owner:  root
+    group:  root
+    mode:   0600
   tags: acme
 
+# TODO: Move CSR out of the way when the above content changes
+
 - name: Generate ACME CSR
-  shell: "openssl req -new -sha256 -key {{ acme_root_dir }}/key/{{ domain.name }}.key -subj \"/CN={{ domain.name }}\" -reqexts SAN -config {{ acme_root_dir }}/{{ domain.name }}.cnf | sudo tee {{ acme_root_dir }}/csr/{{ domain.name }}.csr"
+  shell: "openssl req -new -sha256 -key {{ acme_root_dir }}/key/{{ domain.name }}.key -subj \"/CN={{ domain.name }}\" -config {{ acme_root_dir }}/{{ domain.name }}.cnf | sudo tee {{ acme_root_dir }}/csr/{{ domain.name }}.csr"
   args:
     executable: /bin/bash
     creates: "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
@@ -96,10 +104,11 @@
     data: "{{ acme_challenge }}"
     remaining_days: "{{ acme_days_remaining|default(14) }}"
     terms_agreed: 1
+  register: acme_certificate_status
   tags: acme
 
 - name: Deploy certificates to their paths
-  shell:  "if [ ! -f {{ item.dest }} ]; then cat {{ item.sources|join(' ') }} >{{ item.dest }}; fi"
+  shell:  "if [ {{ item.sources[-1] }} -nt {{ item.dest }} ]; then cat {{ item.sources|join(' ') }} >{{ item.dest }}; fi"
   with_items: "{{ acme_outputs }}"
   tags: acme
 
@@ -111,3 +120,11 @@
     mode:   0600
   with_items: "{{ acme_outputs }}"
   tags: acme
+
+- name: Restart dependent services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items: "{{ domain.service }}"
+  tags: acme
+  when: acme_certificate_status.changed

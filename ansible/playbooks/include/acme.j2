@@ -1,12 +1,18 @@
 [req]
 distinguished_name  = req_dn
-default_bits		    = 2048
+req_extensions	    = v3_req
+default_bits   	    = 2048
+
+[v3_req]
+keyUsage            = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage    = serverAuth, clientAuth
+basicConstraints    = CA:FALSE
+subjectKeyIdentifier= hash
+subjectAltName	    = @alt_names
 
 [req_dn]
-basicConstraints=CA:FALSE
 
-[SAN]
-subjectAltName=DNS:{{ domain.name }}
+[alt_names]
 {% for d in domain.subs %}
-subjectAltName=DNS:{{ d }}.{{ domain.name }}
+DNS.{{ loop.index }}={{ d }}.{{ domain.name }}
 {% endfor %}
