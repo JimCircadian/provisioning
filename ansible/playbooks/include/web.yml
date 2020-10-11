@@ -5,6 +5,22 @@
 - import_role:   name=geerlingguy.php
 - import_role:   name=geerlingguy.php-versions
 - import_role:   name=geerlingguy.php-pgsql
+- import_role:   name=arillso.postfix
+
+- name: Amend postfix configuration (arillso probably isn't worth the hassle)
+  lineinfile:
+    path:   /etc/postfix/main.cf
+    line:   "{{ item }}"
+  with_items:
+    - smtp_use_tls = yes
+    - smtp_tls_security_level = encrypt
+    - smtp_tls_note_starttls_offer = yes
+
+- name: Restart postfix
+  service:
+    name: postfix
+    state: restarted
+
 - import_role:   name=jimcircadian-isso
   tags: isso
 
