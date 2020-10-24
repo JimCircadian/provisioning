@@ -26,6 +26,8 @@
 
 - import_role: name=robertdebock.bootstrap
 - import_role: name=singleplatform-eng.users
+  tags:
+    - base
 - import_role: name=geerlingguy.repo-epel
 - import_role: name=geerlingguy.ntp
 - import_role: name=arillso.logrotate
