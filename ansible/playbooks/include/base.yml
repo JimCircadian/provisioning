@@ -7,7 +7,11 @@
   package:
     name: "{{ item }}"
     state:  installed
-  with_items: "{{ base_packages }}"
+  with_items: 
+    - "{{ base_packages }}"
+    - "{{ base_additional_packages }}"
+  tags:
+    - base-packages
 
 - name:     Setup open ports
   firewalld:

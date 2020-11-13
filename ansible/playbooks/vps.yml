@@ -2,7 +2,9 @@
 - hosts:  vps
   tasks:
     - include_tasks:  include/base.yml
-      tags: base
+      tags: 
+        - base
+        - base-packages
     - include_tasks:  include/data.yml
     - include_tasks:  include/web.yml
       tags: isso
