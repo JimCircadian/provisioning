@@ -2,12 +2,15 @@
 - hosts:  vps
   tasks:
     - include_tasks:  include/base.yml
-      tags: 
+      tags:
         - base
         - base-packages
     - include_tasks:  include/data.yml
     - include_tasks:  include/web.yml
-      tags: isso
+      tags:
+        - isso
+        - goaccess
+        - httpd
     - include_tasks:  include/proxy.yml
       tags: acme
   vars_files:
