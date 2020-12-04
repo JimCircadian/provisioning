@@ -11,6 +11,7 @@
 - import_role:   name=geerlingguy.php-pgsql
   tags: httpd
 - import_role:   name=arillso.postfix
+  tags: postfix
 
 - name: Amend postfix configuration (arillso probably isn't worth the hassle)
   lineinfile:
@@ -40,3 +41,6 @@
 
 - import_role:  name=jimcircadian-goaccess
   tags:         goaccess
+
+- import_role:  name=jimcircadian-games
+  tags:         games

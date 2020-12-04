@@ -7,7 +7,7 @@
   package:
     name: "{{ item }}"
     state:  installed
-  with_items: 
+  with_items:
     - "{{ base_packages }}"
     - "{{ base_additional_packages }}"
   tags:
@@ -35,6 +35,8 @@
 - import_role: name=geerlingguy.repo-epel
 - import_role: name=geerlingguy.ntp
 - import_role: name=arillso.logrotate
+  tags:
+    - logrotate
 
 # # TODO: Use caution to bring these settings in, ensure functionality works first
 # # then review their configurations

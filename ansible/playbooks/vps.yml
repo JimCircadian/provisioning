@@ -5,12 +5,15 @@
       tags:
         - base
         - base-packages
+        - logrotate
     - include_tasks:  include/data.yml
     - include_tasks:  include/web.yml
       tags:
         - isso
         - goaccess
         - httpd
+        - postfix
+        - games
     - include_tasks:  include/proxy.yml
       tags: acme
   vars_files:
