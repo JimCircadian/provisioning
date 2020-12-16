@@ -3,6 +3,7 @@
 - import_role:   name=uoi-io.haproxy
   vars:
     haproxy_frontend: "{{ http_frontend }}"
+  tags: haproxy
 
 - name: Restart haproxy straight after haproxy http setup
   command:  systemctl restart haproxy

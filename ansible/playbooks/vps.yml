@@ -15,7 +15,9 @@
         - postfix
         - games
     - include_tasks:  include/proxy.yml
-      tags: acme
+      tags:
+        - acme
+        - haproxy
   vars_files:
     - ../environments/all.yml
     - ../environments/data.yml
