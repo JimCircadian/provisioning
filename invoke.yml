@@ -2,3 +2,4 @@
 debug:  true
 vars:
     environment:    staging
+    user:           root

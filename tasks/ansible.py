@@ -53,13 +53,18 @@ def run_playbook(ctx, playbook,
         tag_str = " -t \"" + "\" -t \"".join(tag_list) + "\""
         additional_arguments += tag_str
 
+    vault_pass_file = os.path.expandvars("$HOME/.vault_{0}.password".format(environment))
+    vault_arg = ""
+
+    if os.path.exists(vault_pass_file):
+        vault_arg = "--vault-id {}".format(vault_pass_file)
+
     command = os.path.expandvars("ansible-playbook -v -b \
 -e env={0}  \
-{2} \
---vault-id $HOME/.vault_{0}.password \
+{2} {3} \
 -i inventory/{0} \
 playbooks/{1}".format(
-        environment, playbook, additional_arguments
+        environment, playbook, additional_arguments, vault_arg
     ))
     print(os.getcwd())
 

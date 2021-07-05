@@ -1,0 +1,36 @@
+---
+- hosts:  laptop
+  tasks:
+    - fail: msg="OS combination not currently supported ({{ ansible_distribution }} and v{{ ansible_distribution_version }})"
+      when: "not ( ansible_distribution == 'Fedora'
+               and ansible_distribution_version == '34' )"
+
+    - include_tasks:  include/base.yml
+      tags:
+        - base
+
+    - name: Add the flathub flatpak repository remote to the user installation
+      become_user: "{{ vault_users[0].username }}"
+      community.general.flatpak_remote:
+        name:   flathub
+        state:  present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: user
+      tags:
+        - flatpak
+
+    - name: Install flatpak package from flathub for current user
+      become_user: "{{ vault_users[0].username }}"
+      community.general.flatpak:
+        name:   "{{ item }}"
+        state:  present
+        method: user
+      with_items:
+        - "{{ f34_flatpak_packages }}"
+
+    # TODO: EDITOR=vim
+# https://docs.ansible.com/ansible/latest/collections/community/general/flatpak_module.html
+  vars_files:
+    - ../environments/all.yml
+    - "../environments/{{ env }}/all.yml"
+    - "../environments/{{ env }}/vault.yml"

@@ -1,0 +1,8 @@
+[laptop]
+localhost
+
+[local:children]
+laptop
+
+[local:vars]
+ansible_connection=	local

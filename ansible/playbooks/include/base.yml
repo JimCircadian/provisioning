@@ -33,6 +33,7 @@
   tags:
     - base
 - import_role: name=geerlingguy.repo-epel
+  when: ansible_distribution == 'CentOS'
 - import_role: name=geerlingguy.ntp
 - import_role: name=arillso.logrotate
   tags:
