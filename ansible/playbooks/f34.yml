@@ -27,6 +27,8 @@
         method: user
       with_items:
         - "{{ f34_flatpak_packages }}"
+      tags:
+        - flatpak
 
     # TODO: EDITOR=vim
 # https://docs.ansible.com/ansible/latest/collections/community/general/flatpak_module.html
