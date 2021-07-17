@@ -9,8 +9,11 @@
       tags:
         - base
 
+    - name: Set the graphical target up
+      ansible.builtin.command: systemctl set-default graphical.target
+
     - name: Add the flathub flatpak repository remote to the user installation
-      become_user: "{{ vault_users[0].username }}"
+      become_user: "{{ ansible_user_id }}"
       community.general.flatpak_remote:
         name:   flathub
         state:  present
@@ -20,7 +23,7 @@
         - flatpak
 
     - name: Install flatpak package from flathub for current user
-      become_user: "{{ vault_users[0].username }}"
+      become_user: "{{ ansible_user_id }}"
       community.general.flatpak:
         name:   "{{ item }}"
         state:  present
@@ -35,4 +38,4 @@
   vars_files:
     - ../environments/all.yml
     - "../environments/{{ env }}/all.yml"
-    - "../environments/{{ env }}/vault.yml"
+ #   - "../environments/{{ env }}/vault.yml"

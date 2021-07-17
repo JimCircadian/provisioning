@@ -1,0 +1,18 @@
+visudo
+No cockpit
+dnf groupinstall "Xfce Desktop"
+dnf groupinstall "development tools"
+dnf install git
+systemctl set-default graphical.target
+# https://copr.fedorainfracloud.org/coprs/ertzing/madfuload/
+
+dnf install -y xmms projectM-pulseaudio xmms-flac xmms-pulse xfce4-sensors-plugin wpa_supplicant* xfce4-battery-plugin
+dnf update
+
+# As circadian
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+flatpak install -y --user flathub com.gitlab.newsflash com.jgraph.drawio.desktop com.microsoft.Teams com.skype.Client com.slack.Slack com.visualstudio.code io.atom.Atom io.dbeaver.DBeaverCommunity org.audacityteam.Audacity org.blender.Blender org.fedoraproject.MediaWriter org.gimp.GIMP org.libreoffice.LibreOffice org.octave.Octave org.videolan.VLC us.zoom.Zoom com.rawtherapee.RawTherapee io.lmms.LMMS org.freecadweb.FreeCAD org.geany.Geany org.mozilla.firefox org.chromium.Chromium org.keepassxc.KeePassXC org.mozilla.Thunderbird PyCharm-Community com.dropbox.Client runtime/org.freedesktop.Sdk.Extension.rust-stable/x86_64/1.6 org.eclipse.Javascript org.eclipse.Java
+
+
+curl https://sh.rustup.rs -sSf | sh -s -- -y
