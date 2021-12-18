@@ -33,6 +33,8 @@
       tags:
         - flatpak
 
+    # TODO: curl -sf https://www.getlektor.com/installer.py | sudo python3
+
     # TODO: EDITOR=vim
 # https://docs.ansible.com/ansible/latest/collections/community/general/flatpak_module.html
   vars_files:
