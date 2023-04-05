@@ -8,6 +8,7 @@
     name:   "{{ item }}"
     disable_gpg_check: true
     state:  installed
+  when: ansible_pkg_mgr != "yum"
   with_items:
     - https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-34.noarch.rpm
     - https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-34.noarch.rpm
