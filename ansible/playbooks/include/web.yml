@@ -10,6 +10,8 @@
   tags: httpd
 - import_role:   name=geerlingguy.php-pgsql
   tags: httpd
+- import_role:   name=geerlingguy.php-mysql
+  tags: httpd
 - import_role:   name=arillso.postfix
   tags: postfix
 

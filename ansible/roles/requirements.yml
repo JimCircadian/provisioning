@@ -7,7 +7,6 @@
 #- dev-sec.ssh-hardening
 - geerlingguy.nfs
 - geerlingguy.ntp
-
 - arillso.postfix
 - singleplatform-eng.users
 - arillso.logrotate
@@ -18,5 +17,7 @@
 - geerlingguy.php
 - geerlingguy.php-versions
 - geerlingguy.php-pgsql
+- geerlingguy.php-mysql
+- geerlingguy.mysql
 - ANXS.postgresql
 - geerlingguy.nodejs

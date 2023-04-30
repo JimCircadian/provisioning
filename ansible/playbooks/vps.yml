@@ -7,6 +7,8 @@
         - base-packages
         - logrotate
     - include_tasks:  include/data.yml
+      tags:
+        - data
     - include_tasks:  include/web.yml
       tags:
         - isso
