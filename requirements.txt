@@ -1,2 +1,2 @@
-ansible>=4
-invoke>=1.4.1
+ansible<3
+invoke>=1.4.1,<2
