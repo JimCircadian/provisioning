@@ -46,3 +46,7 @@
 
 - import_role:  name=jimcircadian-games
   tags:         games
+
+- import_role:  name=jimcircadian-flicks
+  tags:         flicks
+  when:         flicks_enabled
