@@ -16,6 +16,7 @@
         - httpd
         - postfix
         - games
+        - flicks
     - include_tasks:  include/proxy.yml
       tags:
         - acme
