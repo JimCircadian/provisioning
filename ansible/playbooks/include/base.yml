@@ -1,22 +1,22 @@
 ---
 - name:     Set hostname to "{{ base_hostname }}"
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ base_hostname }}"
 
 - name:     Install RPMFusion
-  dnf:
+  ansible.builtin.dnf:
     name:   "{{ item }}"
     disable_gpg_check: true
     state:  installed
   when: ansible_pkg_mgr != "yum"
   with_items:
-    - https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-34.noarch.rpm
-    - https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-34.noarch.rpm
+    - https://download1.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+    - https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm
   tags:
     - base-packages
 
 - name:     Install default packages
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state:  installed
   with_items:
@@ -27,30 +27,30 @@
   ignore_errors:  true
 
 - name:     Setup open ports
-  firewalld:
+  ansible.builtin.firewalld:
     port:   "{{ item }}"
     state:  enabled
     permanent:  yes
   with_items: "{{ base_firewall_ports }}"
 
 - name:     Enable firewall
-  service:
+  ansible.builtin.service:
     name:   firewalld
     state:  started
 
 - name:     Reload firewall
-  command:  firewall-cmd --reload
+  ansible.builtin.command:  firewall-cmd --reload
 
-- import_role: name=robertdebock.bootstrap
-- import_role: name=singleplatform-eng.users
-  tags:
-    - base
-- import_role: name=geerlingguy.repo-epel
-  when: ansible_distribution == 'CentOS'
-- import_role: name=geerlingguy.ntp
-- import_role: name=arillso.logrotate
-  tags:
-    - logrotate
+#- import_role: name=robertdebock.bootstrap
+#- import_role: name=singleplatform-eng.users
+#  tags:
+#    - base
+#- import_role: name=geerlingguy.repo-epel
+#  when: ansible_distribution == 'CentOS'
+#- import_role: name=geerlingguy.ntp
+#- import_role: name=arillso.logrotate
+#  tags:
+#    - logrotate
 
 # # TODO: Use caution to bring these settings in, ensure functionality works first
 # # then review their configurations

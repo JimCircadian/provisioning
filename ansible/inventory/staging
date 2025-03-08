@@ -1,21 +1,6 @@
-# A physical staging server, reminiscent of the production VPS
-[host]
-staging-host
-
-[data]
-staging-data
-
-[vps]
-staging-vps   apache_listen_port=8080 apache_listen_ip=*
-
-[web]
-staging-web
+[server]
+sol
 
 [staging:children]
-host
-data
-vps
-web
+server
 
-[staging:vars]
-ansible_user=root
