@@ -5,11 +5,7 @@
     - include_tasks:  include/base.yml
   vars_files:
     - ../environments/all.yml
-    - ../environments/data.yml
-    - ../environments/web.yml
-    - ../environments/proxy.yml
+    - ../environments/server.yml
     - "../environments/{{ env }}/all.yml"
-    - "../environments/{{ env }}/data.yml"
-    - "../environments/{{ env }}/web.yml"
-    - "../environments/{{ env }}/proxy.yml"
+    - "../environments/{{ env }}/server.yml"
     - "../environments/{{ env }}/vault.yml"
