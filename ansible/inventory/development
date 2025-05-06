@@ -1,12 +1,9 @@
-[data]
-data.development
-
-[web]
-web.development
+[server]
+dev-vps
 
 [development:children]
-data
-web
+server
 
 [development:vars]
-ansible_user=root
+ansible_user=circadian
+become=True
