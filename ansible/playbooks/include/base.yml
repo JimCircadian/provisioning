@@ -48,7 +48,6 @@
 - import_role: name=geerlingguy.repo-remi
 - import_role: name=geerlingguy.ntp
 - import_role: name=arillso.logrotate
-- import_role: name=geerlingguy.nfs
 
 #  tags:
 #    - logrotate

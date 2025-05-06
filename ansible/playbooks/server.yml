@@ -1,8 +1,22 @@
 ---
 - hosts:  server
   tasks:
-    - debug: msg="hello"
     - include_tasks:  include/base.yml
+
+    - file:
+        path:   /data
+        state:  directory
+        owner:  circadian
+        group:  circadian
+        mode:   '2750'
+
+    - import_role: name=geerlingguy.nfs
+      tags: nfs
+    - import_role: name=geerlingguy.postgresql
+      tags: data
+    - import_role: name=geerlingguy.docker
+      tags: docker
+
   vars_files:
     - ../environments/all.yml
     - ../environments/server.yml

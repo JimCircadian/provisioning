@@ -13,10 +13,10 @@
 - uoi-io.haproxy
 - geerlingguy.htpasswd
 - geerlingguy.apache
-# Failing due to v... versioning
 #- anxs.postgresql
 - geerlingguy.nodejs
 - geerlingguy.postgresql
 - robertdebock.fail2ban
 ## Avoiding this for the moment
 #- bertvv.vsftpd
+- geerlingguy.docker
