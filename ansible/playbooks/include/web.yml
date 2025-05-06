@@ -1,36 +1,6 @@
 ---
-- import_role:   name=geerlingguy.repo-remi
 - import_role:   name=geerlingguy.apache
   tags: httpd
-- import_role:   name=geerlingguy.apache-php-fpm
-  tags: httpd
-- import_role:   name=geerlingguy.php
-  tags: httpd
-- import_role:   name=geerlingguy.php-versions
-  tags: httpd
-- import_role:   name=geerlingguy.php-pgsql
-  tags: httpd
-- import_role:   name=geerlingguy.php-mysql
-  tags: httpd
-- import_role:   name=arillso.postfix
-  tags: postfix
-
-- name: Amend postfix configuration (arillso probably isn't worth the hassle)
-  lineinfile:
-    path:   /etc/postfix/main.cf
-    line:   "{{ item }}"
-  with_items:
-    - smtp_use_tls = yes
-    - smtp_tls_security_level = encrypt
-    - smtp_tls_note_starttls_offer = yes
-
-- name: Restart postfix
-  service:
-    name: postfix
-    state: restarted
-
-- import_role:   name=jimcircadian-isso
-  tags: isso
 
 - name: Created web directories
   file:
@@ -40,13 +10,3 @@
     state:  directory
     mode:   0755
   with_items: "{{ apache_vhosts }}"
-
-- import_role:  name=jimcircadian-goaccess
-  tags:         goaccess
-
-- import_role:  name=jimcircadian-games
-  tags:         games
-
-- import_role:  name=jimcircadian-flicks
-  tags:         flicks
-  when:         flicks_enabled

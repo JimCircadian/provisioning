@@ -17,6 +17,16 @@
     - import_role: name=geerlingguy.docker
       tags: docker
 
+    # TODO: TEST
+    - include_tasks:  include/web.yml
+      tags:
+        - httpd
+        - postfix
+    - include_tasks:  include/proxy.yml
+      tags:
+        - acme
+        - haproxy
+
   vars_files:
     - ../environments/all.yml
     - ../environments/server.yml
