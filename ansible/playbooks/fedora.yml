@@ -38,6 +38,6 @@
     # TODO: EDITOR=vim
 # https://docs.ansible.com/ansible/latest/collections/community/general/flatpak_module.html
   vars_files:
-    - ../environments/all.yml
-    - "../environments/{{ env }}/all.yml"
- #   - "../environments/{{ env }}/vault.yml"
+    - ../environments/vars/all.yml
+    - "../environments/vars/{{ env }}/all.yml"
+ #   - "../environments/vars/{{ env }}/vault.yml"

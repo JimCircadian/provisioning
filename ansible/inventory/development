@@ -1,9 +1,0 @@
-[server]
-dev-vps
-
-[development:children]
-server
-
-[development:vars]
-ansible_user=circadian
-become=True

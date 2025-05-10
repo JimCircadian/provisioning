@@ -1,6 +1,0 @@
-[server]
-sol
-192.168.1.5
-
-[staging:children]
-server

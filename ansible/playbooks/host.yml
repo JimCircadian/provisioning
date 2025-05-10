@@ -6,8 +6,8 @@
     - include_tasks:  include/proxy.yml
 
   vars_files:
-    - ../environments/all.yml
-    - ../environments/host.yml
-    - "../environments/{{ env }}/all.yml"
-    - "../environments/{{ env }}/host.yml"
-    - "../environments/{{ env }}/vault.yml"
+    - ../environments/vars/all.yml
+    - ../environments/vars/host.yml
+    - "../environments/vars/{{ env }}/all.yml"
+    - "../environments/vars/{{ env }}/host.yml"
+    - "../environments/vars/{{ env }}/vault.yml"

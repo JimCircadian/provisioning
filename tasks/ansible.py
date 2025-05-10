@@ -62,7 +62,7 @@ def run_playbook(ctx, playbook,
     command = os.path.expandvars("ansible-playbook -v -b \
 -e env={0}  \
 {2} {3} \
--i inventory/{0} \
+-i environments/inventory/{0} \
 playbooks/{1}".format(
         environment, playbook, additional_arguments, vault_arg
     ))
