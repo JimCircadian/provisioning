@@ -1,9 +1,10 @@
+# provisioning
 
+## Overview
 
-Don't forget to invoke ansible.install-requirements
+Ansible is executed via a collection of tasks implemented via `invoke`.
 
-## TODO
+## Ansible
 
-- Network configuration, password and keys dynamic injection into libvirt ks
-- Remove KS on host after builds
-- https://www.ansible.com/blog/ansible-3.0.0-qa
+Don't forget to `invoke ansible.install-requirements`
+
