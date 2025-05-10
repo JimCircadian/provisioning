@@ -15,7 +15,6 @@ from . import utils
 
 @task(default=True, pre=[
     utils.check_ssh_agent,
-    utils.ch_rundir,
 ])
 def run_playbook(ctx, playbook,
     environment = None,
@@ -72,9 +71,7 @@ playbooks/{1}".format(
     if not dry:
         ctx.run(command)
 
-@task(pre=[
-    utils.ch_rundir,
-])
+@task(pre=[])
 def server_facts(ctx, hostname, environment=None, user=None):
     if not environment:
         environment = ctx.vars.environment
@@ -88,20 +85,14 @@ def server_facts(ctx, hostname, environment=None, user=None):
     logging.debug("COMMAND: {}".format(cmd))
     ctx.run(cmd)
 
-@task(pre=[
-    # TODO: Better way to this within the invoke Collection?
-    utils.ch_rundir
-])
+@task(pre=[])
 def install_requirements(ctx):
     cmd = "ansible-galaxy role install -r roles/requirements.yml"
     logging.debug("COMMAND: {}".format(cmd))
     ctx.run(cmd)
 
 
-@task(pre=[
-    # TODO: Better way to this within the invoke Collection?
-    utils.ch_rundir
-])
+@task(pre=[])
 def gen_ssh_config(ctx):
     #ansible -i inventory/staging --list-hosts libvirt_host | grep -v 'hosts' | awk '{ print $1 }'
     # ssh root@staging-host 'virsh list --name' | grep -v '^$'
