@@ -1,5 +1,6 @@
 ---
 # VMs are not registered via libvirt DHCP yet
+# We must set up the http frontend to field requests for the ACME requests
 - import_role:   name=uoi-io.haproxy
   vars:
     haproxy_frontend: "{{ http_frontend }}"
@@ -18,3 +19,4 @@
   tags: haproxy
   vars:
     haproxy_frontend: "{{ http_frontend + https_frontend }}"
+  when: acme_domains|length > 0
