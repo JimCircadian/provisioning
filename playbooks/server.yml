@@ -10,6 +10,8 @@
         group:  circadian
         mode:   '2750'
 
+    - import_role: name=samba
+      tags: samba
     - import_role: name=geerlingguy.nfs
       tags: nfs
     - import_role: name=geerlingguy.postgresql
