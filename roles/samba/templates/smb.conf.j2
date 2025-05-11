@@ -1,8 +1,8 @@
 #======================= Global Settings =====================================
 [global]
    # basic settings
-   workgroup = {{ deployment_environment|upper }}
-   server string = {{ deployment_environment|title }} Data Server
+   workgroup = {{ env|upper }}
+   server string = {{ env|title }} Data Server
    netbios name = {{ ansible_hostname }}
    netbios aliases = {{ ansible_default_ipv4.address }}
    unix extensions = no
@@ -12,7 +12,6 @@
    client lanman auth = yes
 
    # printers not used
-   # TODO: rothera using /etc/printcap,no,bsd
    printcap name = /dev/null
    load printers = no
 #   printing = none
@@ -45,22 +44,15 @@
    neutralize nt4 emulation = yes
    client use spnego = no
    client max protocol = NT1
-
-   # Added by Paul M. Breen, PSD, 2007-03-02.  Castor had this originally
-   # this is what made the doppler trans files *t.dop instead of *T.dop.
-   # I've added it here also although any loggers that still write via samba
-   # should use rigel, bomem, being awkward couldn't see rigel but could see
-   # vega!?!
    short preserve case = no
 
-# Include system-specific stuff. Helps performance greatly.
+   # Include system-specific stuff. Helps performance greatly.
    include = /etc/samba/smb_%a.conf
 
 #============================ Share Definitions ==============================
 #[homes]
 #   comment = %U Home Directory
 #   browseable = yes
-#   # TODO: This should NOT be available, people can edit data server partitions
 #   writable = yes
 #   guest ok = no
 
