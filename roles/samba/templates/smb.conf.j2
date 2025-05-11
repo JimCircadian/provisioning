@@ -1,0 +1,81 @@
+#======================= Global Settings =====================================
+[global]
+   # basic settings
+   workgroup = {{ deployment_environment|upper }}
+   server string = {{ deployment_environment|title }} Data Server
+   netbios name = {{ ansible_hostname }}
+   netbios aliases = {{ ansible_default_ipv4.address }}
+   unix extensions = no
+   domain logons = yes
+   wide links = yes
+   lanman auth = yes
+   client lanman auth = yes
+
+   # printers not used
+   # TODO: rothera using /etc/printcap,no,bsd
+   printcap name = /dev/null
+   load printers = no
+#   printing = none
+
+   # logs
+   log file = /var/log/samba/log.%m
+   max log size = 50
+   log level = 2
+
+   # security
+   # with security = user, clients are logged on before requests are
+   # made. Therefore a password (or guest access) is required to view
+   # shares.
+   security = user
+   # IMPORTANT:
+   # if an invalid password is given, the user will be logged
+   # in as guest, as long as they are not a valid unix user.
+   # If a matching unix user exists the login will fail.
+   map to guest = Bad User
+   guest account = nobody
+   encrypt passwords = yes
+   smb encrypt = desired
+   smb passwd file = /etc/samba/smbpasswd
+   null passwords = yes
+   ntlm auth = yes
+   lanman auth = yes
+   client lanman auth = yes
+   client ntlmv2 auth = no
+   allow nt4 crypto = yes
+   neutralize nt4 emulation = yes
+   client use spnego = no
+   client max protocol = NT1
+
+   # Added by Paul M. Breen, PSD, 2007-03-02.  Castor had this originally
+   # this is what made the doppler trans files *t.dop instead of *T.dop.
+   # I've added it here also although any loggers that still write via samba
+   # should use rigel, bomem, being awkward couldn't see rigel but could see
+   # vega!?!
+   short preserve case = no
+
+# Include system-specific stuff. Helps performance greatly.
+   include = /etc/samba/smb_%a.conf
+
+#============================ Share Definitions ==============================
+#[homes]
+#   comment = %U Home Directory
+#   browseable = yes
+#   # TODO: This should NOT be available, people can edit data server partitions
+#   writable = yes
+#   guest ok = no
+
+{%- for samba in samba_shares %}
+
+[{{ samba.share }}]
+   comment = {{ samba.comment }}
+   browseable = yes
+   path = {{ samba.path }}
+   public = {{ samba.public|default("no") }}
+   writeable = {{ samba.writeable|default("no") }}
+   printable = no
+   guest ok = {{ samba.guestok|default("no") }}
+   {% if 'validusers' in samba %}
+   valid users = {{ samba.validusers|join(' ') }}
+   {% endif %}
+
+{% endfor %}

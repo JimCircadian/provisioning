@@ -1,0 +1,31 @@
+---
+- name: Ensuring samba service is running
+  service: name=smb state=started enabled=yes
+  when: samba_enable_service
+
+- name: Creating directories to be shared
+  file: path={{ item.path }} state=directory
+  with_items:
+     - "{{ samba_shares }}"
+
+- name: Creating smb.conf file from template
+  template: src="smb.conf.j2" dest="/etc/samba/smb.conf" mode=0644 owner=root group=root
+  notify:
+     - Restarting samba service
+
+- name: Creating samba unix accounts
+  user:
+    name:   "{{ item.user }}"
+    uid:    "{{ item.uid }}"
+    createhome:   no
+    groups:     "{{ item.groups|default(omit) }}"
+  when: item.uid is defined
+  with_items: "{{ samba_users }}"
+
+- name: Creating samba accounts
+  shell: echo -ne "{{ item.password }}\n{{ item.password }}" | smbpasswd -a {{ item.user }} -s
+  with_items: "{{ samba_users }}"
+  when: item.user in samba_user_list or samba_user_list|length == 0
+  register: smbpasswd
+  changed_when: smbpasswd.stdout_lines|length > 0
+  no_log: false

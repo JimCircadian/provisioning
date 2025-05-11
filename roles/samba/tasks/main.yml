@@ -1,0 +1,10 @@
+---
+- include: install.yml
+  tags:
+     - install
+     - samba
+
+- include: configure.yml
+  tags:
+     - configure
+     - samba
