@@ -10,6 +10,7 @@ if [ ! -f $ACTIVATE ]; then
 fi
 
 . $ACTIVATE
+pip install --upgrade setuptools pip wheel
 pip install -r requirements.txt
 
 echo "Run source venv/bin/activate"
