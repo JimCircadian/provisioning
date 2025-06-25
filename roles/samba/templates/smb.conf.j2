@@ -6,10 +6,7 @@
    netbios name = {{ ansible_hostname }}
    netbios aliases = {{ ansible_default_ipv4.address }}
    unix extensions = no
-   domain logons = yes
    wide links = yes
-   lanman auth = yes
-   client lanman auth = yes
 
    # printers not used
    printcap name = /dev/null
@@ -32,18 +29,10 @@
    # If a matching unix user exists the login will fail.
    map to guest = Bad User
    guest account = nobody
-   encrypt passwords = yes
    smb encrypt = desired
    smb passwd file = /etc/samba/smbpasswd
-   null passwords = yes
    ntlm auth = yes
-   lanman auth = yes
-   client lanman auth = yes
-   client ntlmv2 auth = no
-   allow nt4 crypto = yes
    neutralize nt4 emulation = yes
-   client use spnego = no
-   client max protocol = NT1
    short preserve case = no
 
    # Include system-specific stuff. Helps performance greatly.
@@ -61,6 +50,7 @@
 [{{ samba.share }}]
    comment = {{ samba.comment }}
    browseable = yes
+   read only = no
    path = {{ samba.path }}
    public = {{ samba.public|default("no") }}
    writeable = {{ samba.writeable|default("no") }}
@@ -69,5 +59,7 @@
    {% if 'validusers' in samba %}
    valid users = {{ samba.validusers|join(' ') }}
    {% endif %}
+   #share modes
+   #hosts allow
 
 {% endfor %}

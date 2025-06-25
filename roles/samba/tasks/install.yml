@@ -1,4 +1,6 @@
 ---
 - name: Installing samba
   package:
-    name: samba
+    name:
+    - samba
+    - samba-client

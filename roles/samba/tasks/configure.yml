@@ -28,4 +28,4 @@
   when: item.user in samba_user_list or samba_user_list|length == 0
   register: smbpasswd
   changed_when: smbpasswd.stdout_lines|length > 0
-  no_log: false
+  no_log: true
