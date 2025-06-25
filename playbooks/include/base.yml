@@ -1,6 +1,11 @@
 ---
 - import_role: name=robertdebock.bootstrap
 
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
 - name:     Set hostname to "{{ base_hostname }}"
   ansible.builtin.hostname:
     name: "{{ base_hostname }}"
