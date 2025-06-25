@@ -18,12 +18,13 @@
       tags: data
     - import_role: name=geerlingguy.docker
       tags: docker
-      
+
     - include_tasks:  include/web.yml
       tags:
         - httpd
         - postfix
     - include_tasks:  include/proxy.yml
+      when: proxy_enable
       tags:
         - acme
         - haproxy
