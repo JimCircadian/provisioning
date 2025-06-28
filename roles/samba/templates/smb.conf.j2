@@ -2,11 +2,12 @@
 [global]
    # basic settings
    workgroup = {{ env|upper }}
+   server role = standalone
    server string = {{ env|title }} Data Server
    netbios name = {{ ansible_hostname }}
    netbios aliases = {{ ansible_default_ipv4.address }}
-   unix extensions = no
-   wide links = yes
+   unix extensions = yes
+   wide links = no
 
    # printers not used
    printcap name = /dev/null
@@ -29,7 +30,7 @@
    # If a matching unix user exists the login will fail.
    map to guest = Bad User
    guest account = nobody
-   smb encrypt = desired
+   smb encrypt = required
    smb passwd file = /etc/samba/smbpasswd
    ntlm auth = yes
    neutralize nt4 emulation = yes
