@@ -51,6 +51,8 @@
    comment = {{ samba.comment }}
    browseable = yes
    read only = no
+   create mask = 0644
+   directory mask = 0755
    path = {{ samba.path }}
    public = {{ samba.public|default("no") }}
    writeable = {{ samba.writeable|default("no") }}
