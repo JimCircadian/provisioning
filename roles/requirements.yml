@@ -10,11 +10,7 @@
 - arillso.postfix
 - singleplatform-eng.users
 - arillso.logrotate
-# DEV: - uoi-io.haproxy
-- name: uoi-io.haproxy
-  src: ssh://git@github.com/jimcircadian/ansible-haproxy.git
-  version: main
-  scm: git
+- uoi-io.haproxy
 - geerlingguy.htpasswd
 - geerlingguy.apache
 #- anxs.postgresql
