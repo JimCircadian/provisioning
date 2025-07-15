@@ -18,6 +18,8 @@
       tags: data
     - import_role: name=geerlingguy.docker
       tags: docker
+    - import_role: name=idNoRD.listmonk
+      tags: listmonk
 
     - include_tasks:  include/web.yml
       tags:
