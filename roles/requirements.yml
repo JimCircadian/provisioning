@@ -20,4 +20,8 @@
 ## Avoiding this for the moment
 #- bertvv.vsftpd
 - geerlingguy.docker
-- idNoRD.listmonk
+# - idNoRD.listmonk
+- name: idNoRD.listmonk
+  src: ssh://git@github.com/jimcircadian/ansible-listmonk.git
+  version: main
+  scm: git
