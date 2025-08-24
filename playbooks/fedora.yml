@@ -34,7 +34,8 @@
         - flatpak
 
     # TODO: curl -sf https://www.getlektor.com/installer.py | sudo python3
-
+    # TODO: CODECS: vlc-plugins-freeworld  apache-commons-codec flac-libs libavcodec-*
+    # TODO: JUILIA sudo dnf install gcc gcc-c++ gcc-gfortran python3 perl wget m4 cmake pkgconfig curl
     # TODO: EDITOR=vim
 # https://docs.ansible.com/ansible/latest/collections/community/general/flatpak_module.html
   vars_files:
