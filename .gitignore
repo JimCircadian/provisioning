@@ -1,5 +1,5 @@
 environments
 *.pyc
-venv/
+venv*/
 ansible/roles/libvirtd
 ansible/roles/jimcircadian-isso
