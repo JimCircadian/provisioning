@@ -2,6 +2,8 @@
 - hosts:  server
   tasks:
     - include_tasks:  include/base.yml
+      tags:
+        - base-packages
 
     - file:
         path:   /data
