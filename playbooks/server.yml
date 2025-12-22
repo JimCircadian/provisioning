@@ -18,8 +18,7 @@
       tags: nfs
     - import_role: name=geerlingguy.postgresql
       tags: data
-    - import_role: name=geerlingguy.docker
-      tags: docker
+
     - import_role: name=idNoRD.listmonk
       tags: listmonk
 

@@ -1,27 +1,31 @@
 ---
-- robertdebock.bootstrap
-- geerlingguy.repo-epel
-- geerlingguy.repo-remi
-#- linuxhq.ius
-#- dev-sec.os-hardening
-#- dev-sec.ssh-hardening
-- geerlingguy.nfs
-- geerlingguy.ntp
-- arillso.postfix
-- singleplatform-eng.users
-- arillso.logrotate
-- uoi-io.haproxy
-- geerlingguy.htpasswd
-- geerlingguy.apache
-#- anxs.postgresql
-- geerlingguy.nodejs
-- geerlingguy.postgresql
-- robertdebock.fail2ban
-## Avoiding this for the moment
-#- bertvv.vsftpd
-- geerlingguy.docker
-# - idNoRD.listmonk
-- name: idNoRD.listmonk
-  src: ssh://git@github.com/jimcircadian/ansible-listmonk.git
-  version: main
-  scm: git
+collections:
+  - name: containers.podman
+roles:
+  - robertdebock.bootstrap
+  - geerlingguy.repo-epel
+  - geerlingguy.repo-remi
+  #- linuxhq.ius
+  #- dev-sec.os-hardening
+  #- dev-sec.ssh-hardening
+  - geerlingguy.nfs
+  - geerlingguy.ntp
+  - arillso.postfix
+  - singleplatform-eng.users
+  - arillso.logrotate
+  - uoi-io.haproxy
+  - geerlingguy.htpasswd
+  - geerlingguy.apache
+  #- anxs.postgresql
+  - geerlingguy.nodejs
+  - geerlingguy.postgresql
+  - robertdebock.fail2ban
+  ## Avoiding this for the moment
+  #- bertvv.vsftpd
+  #- geerlingguy.docker
+  ## Replacing with podman
+  # - idNoRD.listmonk
+  - name: idNoRD.listmonk
+    src: ssh://git@github.com/jimcircadian/ansible-listmonk.git
+    version: main
+    scm: git
