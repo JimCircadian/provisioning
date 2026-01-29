@@ -5,8 +5,10 @@
 - name: Created web directories
   file:
     path:   "{{ item.documentroot }}"
-    owner:  root
+    owner:  "{{ item.documentroot_owner|default('root') }}"
     group:  root
     state:  directory
     mode:   0755
   with_items: "{{ apache_vhosts }}"
+  tags:
+    - httpd
