@@ -1,12 +1,12 @@
 ---
 # VMs are not registered via libvirt DHCP yet
-- import_role:   name=uoi-io.haproxy
-  vars:
-    haproxy_frontend: "{{ http_frontend }}"
-  tags: haproxy
+#- import_role:   name=uoi-io.haproxy
+#  vars:
+#    haproxy_frontend: "{{ http_frontend }}"
+#  tags: haproxy
 
-- name: Restart haproxy straight after haproxy http setup
-  command:  systemctl restart haproxy
+#- name: Restart haproxy straight after haproxy http setup
+#  command:  systemctl restart haproxy
 
 - include_tasks: include/acme.yml
   loop: "{{ acme_domains }}"
@@ -14,7 +14,7 @@
     loop_var: domain
   tags: acme
 
-- import_role:   name=uoi-io.haproxy
-  tags: haproxy
-  vars:
-    haproxy_frontend: "{{ http_frontend + https_frontend }}"
+#- import_role:   name=uoi-io.haproxy
+#  tags: haproxy
+#  vars:
+#    haproxy_frontend: "{{ http_frontend + https_frontend }}"
