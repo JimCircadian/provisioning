@@ -18,6 +18,9 @@
       tags: nfs
     - import_role: name=geerlingguy.postgresql
       tags: data
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+        # postgres_users_no_log: false
 
     - import_role: name=idNoRD.listmonk
       tags: listmonk
