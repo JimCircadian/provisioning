@@ -25,6 +25,12 @@
     - import_role: name=idNoRD.listmonk
       tags: listmonk
 
+    # TODO: https://docs.librephotos.com/docs/installation/unified-deployment
+    - import_tasks:  include/photos.yml
+      when: photos_enable
+      tags:
+        - photos
+
     - include_tasks:  include/web.yml
       tags:
         - httpd

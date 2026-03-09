@@ -1,0 +1,43 @@
+---
+- name: Ensure podman is installed
+  ansible.builtin.package:
+    name: podman
+    state: installed
+  with_items:
+    - podman
+
+- name: Create the photos user
+  ansible.builtin.user:
+    name: photos
+    create_home: yes
+
+- name: Create directories necessary for librephotos
+  ansible.builtin.file:
+    path:   "/home/photos/{{ item }}"
+    owner:  photos
+    group:  photos
+    state:  directory
+  with_items:
+    - data
+    - db
+    - protected_media
+    - logs
+
+- name: Specify and run the container
+  containers.podman.podman_container:
+    name: librephotos
+    image: docker.io/reallibrephotos/librephotos-unified
+    state: started
+    restart: true
+    state: present
+    recreate: true
+    ports:
+      - "3000:8081"
+    volumes:
+      - "/home/photos/data:/data"
+      - "/home/photos/db:/db"
+      - "/home/photos/protected_media:/protected_media"
+      - "/home/photos/logs:/logs"
+    env:
+      SERVE_FRONTEND: true
+      DB_BACKEND: "sqlite"
