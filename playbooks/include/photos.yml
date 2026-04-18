@@ -11,6 +11,11 @@
     name: photos
     create_home: yes
 
+- name: Modify home directory permissions for group
+  ansible.builtin.file:
+    path: /home/photos/
+    mode: 0750
+
 - name: Create directories necessary for librephotos
   ansible.builtin.file:
     path:   "/home/photos/{{ item }}"
@@ -23,16 +28,21 @@
     - protected_media
     - logs
 
+- name: Modify data directory permissions for group
+  ansible.builtin.file:
+    path: /home/photos/data
+    mode: g+w
+
 - name: Specify and run the container
   containers.podman.podman_container:
     name: librephotos
     image: docker.io/reallibrephotos/librephotos-unified
     state: started
     restart: true
-    state: present
+    state: started
     recreate: true
     ports:
-      - "3000:8081"
+      - "3000:8001"
     volumes:
       - "/home/photos/data:/data"
       - "/home/photos/db:/db"
@@ -41,3 +51,11 @@
     env:
       SERVE_FRONTEND: true
       DB_BACKEND: "sqlite"
+
+- name: Add users to the photos user group
+  ansible.builtin.user:
+    append: true
+    groups:
+      - photos
+    name:   "{{ item }}"
+  loop:     "{{ photos_user_list }}"
