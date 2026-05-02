@@ -68,6 +68,16 @@
     creates: "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
   tags: acme
 
+- name: Create self-signed certificate from CSR
+  community.crypto.x509_certificate:
+    path: "{{ item.sources[-1] }}"
+    csr_path: "{{ acme_root_dir }}/csr/{{ domain.name }}.csr"
+    privatekey_path: "{{ acme_root_dir }}/key/{{ domain.name }}.key"
+    provider: selfsigned
+  when: acme_selfsign
+  with_items: "{{ acme_outputs }}"
+  tags: acme
+
 - name: "Create a challenge for {{ domain.name }} using a account key from a variable."
   acme_certificate:
     acme_directory: "{{ acme_directory }}"
@@ -81,6 +91,7 @@
     remaining_days: "{{ acme_days_remaining|default(14) }}"
     terms_agreed: 1
   register: acme_challenge
+  when: not acme_selfsign
   tags: acme
 
 - copy:
@@ -105,6 +116,7 @@
     remaining_days: "{{ acme_days_remaining|default(14) }}"
     terms_agreed: 1
   register: acme_certificate_status
+  when: not acme_selfsign
   tags: acme
 
 - name: Deploy certificates to their paths
@@ -127,4 +139,4 @@
     state: restarted
   with_items: "{{ domain.service }}"
   tags: acme
-  when: acme_certificate_status.changed
+  when: acme_certificate_status.changed or acme_selfsign
