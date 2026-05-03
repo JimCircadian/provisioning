@@ -26,6 +26,7 @@
   shell: "if [ ! -f {{ acme_account_key_file }} ]; then openssl genrsa 4096 | sudo tee {{ acme_account_key_file }}; fi"
   tags: acme
 
+# We do this with selfsign, to ensure the equivalent works in non-selfsign contexts
 - name: "Create .well-known/acme-challenge directory"
   file:
     path: "{{ domain.challenge }}/.well-known/acme-challenge"

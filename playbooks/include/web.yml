@@ -12,3 +12,11 @@
   with_items: "{{ apache_vhosts }}"
   tags:
     - httpd
+
+- name: Ensure SSL is switched off if present (doesn't happen via apache above)
+  ansible.builtin.replace:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: '^(Listen 443.*)$'
+    replace: '# \1'
+  tags:
+    - httpd
