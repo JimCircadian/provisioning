@@ -35,6 +35,8 @@
       tags:
         - httpd
         - postfix
+        - wsgi
+
     - include_tasks:  include/proxy.yml
       when: proxy_enable
       tags:

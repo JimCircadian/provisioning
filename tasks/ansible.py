@@ -58,7 +58,7 @@ def run_playbook(ctx, playbook,
     if os.path.exists(vault_pass_file):
         vault_arg = "--vault-id {}".format(vault_pass_file)
 
-    command = os.path.expandvars("ansible-playbook -v -b \
+    command = os.path.expandvars("ansible-playbook -vv -b \
 -e env={0}  \
 {2} {3} \
 -i environments/inventory/{0} \

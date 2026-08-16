@@ -1,6 +1,36 @@
 ---
+
+# See notes in wsgi.md on Desktop
+- name: Setting up WSGI user for any applications
+  user:
+    name: "{{ item }}"
+  with_items: "{{ wsgi_users }}"
+  tags:
+    - wsgi
+
+- name: Creating virtual environments
+  pip:
+    name: "{{ item.pip_uri }}"
+    virtualenv: "{{ item.path }}/venv"
+    virtualenv_command: "/usr/bin/python3.12 -m venv"
+    # TODO: use UV to install this if configurable?
+  with_items: "{{ wsgi_endpoint }}"
+  tags:
+    - wsgi
+
+- name: Setting up endpoints
+  template:
+    src: wsgi_app_endpoint.py.j2
+    dest: "{{ item.path }}/{{ item.name }}.py"
+    mode: 0755
+  with_items: "{{ wsgi_endpoint }}"
+  tags:
+    - wsgi
+
 - import_role:   name=geerlingguy.apache
-  tags: httpd
+  tags:
+  - httpd
+  - wsgi
 
 - name: Created web directories
   file:
