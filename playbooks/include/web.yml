@@ -3,8 +3,8 @@
 # See notes in wsgi.md on Desktop
 - name: Setting up WSGI user for any applications
   user:
-    name: "{{ item }}"
-  with_items: "{{ wsgi_users }}"
+    name: "{{ item.user }}"
+  with_items: "{{ wsgi_endpoints }}"
   tags:
     - wsgi
 
@@ -14,16 +14,26 @@
     virtualenv: "{{ item.path }}/venv"
     virtualenv_command: "/usr/bin/python3.12 -m venv"
     # TODO: use UV to install this if configurable?
-  with_items: "{{ wsgi_endpoint }}"
+  with_items: "{{ wsgi_endpoints }}"
   tags:
     - wsgi
 
+- name: Setting up settings file
+  template:
+    src: wsgi_env_file.j2
+    dest: "/home/{{ item.user }}/.env"
+    owner: "{{ item.user }}"
+    mode: 0600
+  with_items: "{{ wsgi_endpoints }}"
+  tags:
+    - wsgi
+    
 - name: Setting up endpoints
   template:
     src: wsgi_app_endpoint.py.j2
     dest: "{{ item.path }}/{{ item.name }}.py"
     mode: 0755
-  with_items: "{{ wsgi_endpoint }}"
+  with_items: "{{ wsgi_endpoints }}"
   tags:
     - wsgi
 
