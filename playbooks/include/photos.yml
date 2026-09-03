@@ -11,6 +11,10 @@
     name: photos
     create_home: yes
 
+- name: Configure rootless Podman for deploy user
+  ansible.builtin.command:
+    cmd: loginctl enable-linger photos
+
 - name: Modify home directory permissions for group
   ansible.builtin.file:
     path: /home/photos/
@@ -33,24 +37,80 @@
     path: /home/photos/data
     mode: g+w
 
-- name: Specify and run the container
-  containers.podman.podman_container:
-    name: librephotos
-    image: docker.io/reallibrephotos/librephotos-unified
-    state: started
-    restart: true
-    state: started
-    recreate: true
-    ports:
-      - "3000:8001"
-    volumes:
-      - "/home/photos/data:/data"
-      - "/home/photos/db:/db"
-      - "/home/photos/protected_media:/protected_media"
-      - "/home/photos/logs:/logs"
-    env:
-      SERVE_FRONTEND: true
-      DB_BACKEND: "sqlite"
+#- name: Get stats of a file
+#  ansible.builtin.stat:
+#    path: /home/photos/install
+#  register: photos_installdir
+
+#- name: Get the librephotos codebase
+#  ansible.builtin.git:
+#    repo: https://github.com/LibrePhotos/librephotos.git
+#    dest: /home/photos/install
+#    version: 1.1.0
+#  become: true
+#  become_user: photos
+#  when: not photos_installdir.stat.isdir
+
+- name: Link to the current install compose
+  ansible.builtin.template:
+    src: photos/docker-compose.yml.j2
+    dest: /home/photos/docker-compose.yml
+    owner: photos
+    group: photos
+
+- name: Template the env configuration for use
+  ansible.builtin.template:
+    src: photos/env.j2
+    dest: /home/photos/.env
+    owner: photos
+    group: photos
+    mode: '0640'
+
+- name: Replace
+  ansible.builtin.replace:
+    path: /home/photos/docker-compose.yml
+    regexp: 'image: (reallibrephotos|pgautoupgrade)'
+    replace: 'image: docker.io/\1'
+
+- name: Pull images with Podman
+  ansible.builtin.command:
+    cmd: podman-compose pull
+    chdir: /home/photos
+  become: true
+  become_user: "photos"
+
+- name: Start application with Podman Compose
+  ansible.builtin.command:
+    cmd: podman-compose up -d
+    chdir: /home/photos
+  become: true
+  become_user: "photos"
+
+#- name: Specify and run the container
+#  containers.podman.podman_container:
+#    name: librephotos
+#    image: docker.io/reallibrephotos/librephotos-unified:latest
+#    state: started
+#    recreate: false
+#    ports:
+#      - "3000:8001"
+#    volumes:
+#      ------ VOLUMES
+#      - "/home/photos/db:/db"
+#      - "/home/photos/protected_media:/protected_media"
+#      - "/home/photos/logs:/logs"
+#    env:
+#      SERVE_FRONTEND: true
+#      DB_BACKEND: "sqlite"
+#      FEATURE_PROCESS_EMBEDDED_MEDIA: "false"
+#      FEATURE_VIDEO: "false"
+#      FEATURE_FACE_DETECTION: "false"
+#      FEATURE_FACE_CLUSTER: "false"
+#      FEATURE_IMAGE_CAPTIONING: "false"
+#      FEATURE_REVERSE_GEOCODING: "false"
+#      FEATURE_SCENE_CLASSIFICATION: "false"
+#  become: yes
+#  become_user: photos
 
 - name: Add users to the photos user group
   ansible.builtin.user:
