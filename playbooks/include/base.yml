@@ -34,7 +34,7 @@
   ignore_errors:  true
 
 - name:     Setup open ports
-  ansible.builtin.firewalld:
+  ansible.posix.firewalld:
     port:   "{{ item }}"
     state:  enabled
     permanent:  yes
