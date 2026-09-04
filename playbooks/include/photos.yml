@@ -37,20 +37,6 @@
     path: /home/photos/data
     mode: g+w
 
-#- name: Get stats of a file
-#  ansible.builtin.stat:
-#    path: /home/photos/install
-#  register: photos_installdir
-
-#- name: Get the librephotos codebase
-#  ansible.builtin.git:
-#    repo: https://github.com/LibrePhotos/librephotos.git
-#    dest: /home/photos/install
-#    version: 1.1.0
-#  become: true
-#  become_user: photos
-#  when: not photos_installdir.stat.isdir
-
 - name: Link to the current install compose
   ansible.builtin.template:
     src: photos/docker-compose.yml.j2
