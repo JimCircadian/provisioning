@@ -49,9 +49,9 @@ services:
     container_name: backend
     restart: unless-stopped
     volumes:
-    {% for host_path, subfolder in librephotos_scan_directories %}
+{% for host_path, subfolder in librephotos_scan_directories %}
       - {{ host_path }}:/data/{{ subfolder }}:ro
-    {% endfor %}
+{% endfor %}
       - ${data}/protected_media:/protected_media
       - ${data}/logs:${baseLogs:-/logs}
       - ${data}/cache:/root/.cache
