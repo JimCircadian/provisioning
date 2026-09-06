@@ -10,7 +10,7 @@
         state:  directory
         owner:  circadian
         group:  circadian
-        mode:   '2750'
+        mode:   "{{ data_directory_mode }}"
 
     - import_role: name=samba
       tags: samba
