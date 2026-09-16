@@ -14,8 +14,12 @@
 
     - import_role: name=samba
       tags: samba
+      when: samba_enable
+
     - import_role: name=geerlingguy.nfs
       tags: nfs
+      when: nfs_enable
+
     - import_role: name=geerlingguy.postgresql
       tags: data
       vars:
