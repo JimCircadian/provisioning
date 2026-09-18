@@ -1,13 +1,12 @@
 ---
 collections:
   - name: containers.podman
+  - name: devsec.hardening
 roles:
   - robertdebock.bootstrap
   - geerlingguy.repo-epel
   - geerlingguy.repo-remi
   #- linuxhq.ius
-  #- dev-sec.os-hardening
-  #- dev-sec.ssh-hardening
   - geerlingguy.nfs
   - geerlingguy.ntp
   - arillso.postfix
