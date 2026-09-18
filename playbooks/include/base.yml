@@ -1,6 +1,11 @@
 ---
 - import_role: name=robertdebock.bootstrap
 
+- name: Ensure libselinux-python is available
+  package:
+    name: python3-libselinux
+    state: installed
+
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
   ansible.posix.selinux:
     policy: targeted
@@ -53,6 +58,10 @@
 - import_role: name=geerlingguy.repo-remi
 - import_role: name=geerlingguy.ntp
 - import_role: name=arillso.logrotate
+- import_role: name=devsec.hardening.ssh_hardening
+  vars:
+    sshd_custom_options:
+      - "AcceptEnv LANG"
 
 #  tags:
 #    - logrotate
@@ -62,5 +71,5 @@
 # # TODO: SETTINGS DOES NOT WORK https://repo.ius.io/ius-release-el7.rpm REQUIRED
 # #  - linuxhq.ius
 # #  - dev-sec.os-hardening
-# #  - dev-sec.ssh-hardening
+
 #    - geerlingguy.postfix
