@@ -62,6 +62,8 @@
   vars:
     sshd_custom_options:
       - "AcceptEnv LANG"
+  tags:
+    - hardening
 
 #  tags:
 #    - logrotate

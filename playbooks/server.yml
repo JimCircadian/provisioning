@@ -4,6 +4,7 @@
     - include_tasks:  include/base.yml
       tags:
         - base-packages
+        - hardening
 
     - file:
         path:   /data
