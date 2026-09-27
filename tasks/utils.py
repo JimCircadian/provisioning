@@ -25,9 +25,3 @@ def check_ssh_agent(ctx):
 def text_context(ctx):
     logging.debug("Outputting invokes context")
     pprint(ctx)
-
-@task
-def ch_rundir(ctx):
-    logging.debug("Changing directory")
-    old_pwd = os.getcwd()
-    os.chdir("ansible")

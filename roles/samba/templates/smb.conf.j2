@@ -1,0 +1,68 @@
+#======================= Global Settings =====================================
+[global]
+   # basic settings
+   workgroup = {{ env|upper }}
+   server role = standalone
+   server string = {{ env|title }} Data Server
+   netbios name = {{ ansible_hostname }}
+   netbios aliases = {{ ansible_default_ipv4.address }}
+   unix extensions = yes
+   wide links = no
+
+   # printers not used
+   printcap name = /dev/null
+   load printers = no
+#   printing = none
+
+   # logs
+   log file = /var/log/samba/log.%m
+   max log size = 50
+   log level = 2
+
+   # security
+   # with security = user, clients are logged on before requests are
+   # made. Therefore a password (or guest access) is required to view
+   # shares.
+   security = user
+   # IMPORTANT:
+   # if an invalid password is given, the user will be logged
+   # in as guest, as long as they are not a valid unix user.
+   # If a matching unix user exists the login will fail.
+   map to guest = Bad User
+   guest account = nobody
+   smb encrypt = required
+   smb passwd file = /etc/samba/smbpasswd
+   ntlm auth = yes
+   neutralize nt4 emulation = yes
+   short preserve case = no
+
+   # Include system-specific stuff. Helps performance greatly.
+   include = /etc/samba/smb_%a.conf
+
+#============================ Share Definitions ==============================
+#[homes]
+#   comment = %U Home Directory
+#   browseable = yes
+#   writable = yes
+#   guest ok = no
+
+{%- for samba in samba_shares %}
+
+[{{ samba.share }}]
+   comment = {{ samba.comment }}
+   browseable = yes
+   read only = no
+   create mask = 0644
+   directory mask = 0755
+   path = {{ samba.path }}
+   public = {{ samba.public|default("no") }}
+   writeable = {{ samba.writeable|default("no") }}
+   printable = no
+   guest ok = {{ samba.guestok|default("no") }}
+   {% if 'validusers' in samba %}
+   valid users = {{ samba.validusers|join(' ') }}
+   {% endif %}
+   #share modes
+   #hosts allow
+
+{% endfor %}

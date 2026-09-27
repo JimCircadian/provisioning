@@ -1,0 +1,56 @@
+---
+- hosts:  server
+  tasks:
+    - include_tasks:  include/base.yml
+      tags:
+        - base-packages
+        - hardening
+
+    - file:
+        path:   /data
+        state:  directory
+        owner:  circadian
+        group:  circadian
+        mode:   "{{ data_directory_mode }}"
+
+    - import_role: name=samba
+      tags: samba
+      when: samba_enable
+
+    - import_role: name=geerlingguy.nfs
+      tags: nfs
+      when: nfs_enable
+
+    - import_role: name=geerlingguy.postgresql
+      tags: data
+      #vars:
+        #ansible_python_interpreter: /usr/bin/python3
+        # postgres_users_no_log: false
+
+    - import_role: name=idNoRD.listmonk
+      tags: listmonk
+
+    # TODO: https://docs.librephotos.com/docs/installation/unified-deployment
+    - import_tasks:  include/photos.yml
+      when: photos_enable
+      tags:
+        - photos
+
+    - include_tasks:  include/web.yml
+      tags:
+        - httpd
+        - postfix
+        - wsgi
+
+    - include_tasks:  include/proxy.yml
+      when: proxy_enable
+      tags:
+        - acme
+        - haproxy
+
+  vars_files:
+    - ../environments/vars/all.yml
+    - ../environments/vars/server.yml
+    - "../environments/vars/{{ env }}/all.yml"
+    - "../environments/vars/{{ env }}/server.yml"
+    - "../environments/vars/{{ env }}/vault.yml"

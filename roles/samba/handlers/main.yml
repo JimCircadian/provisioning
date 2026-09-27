@@ -1,0 +1,5 @@
+---
+# Restart service
+- name: Restarting samba service
+  service: name=smb state=restarted enabled=yes
+  when: samba_enable_service

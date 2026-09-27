@@ -1,5 +1,7 @@
-environments
+/environments/
 *.pyc
 venv*/
 !ansible/roles/jimcircadian-*
 ansible/roles/*/
+/venv/
+/*.tar.gz

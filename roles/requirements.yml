@@ -1,0 +1,31 @@
+---
+collections:
+  - name: containers.podman
+  - name: devsec.hardening
+roles:
+  - robertdebock.bootstrap
+  - geerlingguy.repo-epel
+  - geerlingguy.repo-remi
+  #- linuxhq.ius
+  - geerlingguy.nfs
+  - geerlingguy.ntp
+  - arillso.postfix
+  - singleplatform-eng.users
+  - arillso.logrotate
+  - uoi-io.haproxy
+  - geerlingguy.htpasswd
+  - geerlingguy.apache
+  #- anxs.postgresql
+  - geerlingguy.nodejs
+  - geerlingguy.postgresql
+  - robertdebock.fail2ban
+  ## Avoiding this for the moment
+  #- bertvv.vsftpd
+  #- geerlingguy.docker
+  ## Replacing with podman
+  ## https://github.com/containers/ansible-podman-collections
+  # - idNoRD.listmonk
+  - name: idNoRD.listmonk
+    src: ssh://git@github.com/jimcircadian/ansible-listmonk.git
+    version: main
+    scm: git

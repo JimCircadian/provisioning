@@ -1,0 +1,8 @@
+#!{{ item.path }}/venv/bin/python
+"""
+WSGI config for {{ item.name }} project.
+"""
+
+# This should load up the flask endpoint
+import {{ item.app_module }}
+from {{ item.app_module }}.app import app

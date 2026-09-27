@@ -1,0 +1,13 @@
+---
+- hosts:  host
+  tasks:
+    - include_tasks:  include/base.yml
+    - import_role:    name=libvirtd
+    - include_tasks:  include/proxy.yml
+
+  vars_files:
+    - ../environments/vars/all.yml
+    - ../environments/vars/host.yml
+    - "../environments/vars/{{ env }}/all.yml"
+    - "../environments/vars/{{ env }}/host.yml"
+    - "../environments/vars/{{ env }}/vault.yml"

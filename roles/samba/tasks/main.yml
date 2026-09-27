@@ -1,0 +1,10 @@
+---
+- include_tasks: install.yml
+  tags:
+     - install
+     - samba
+
+- include_tasks: configure.yml
+  tags:
+     - configure
+     - samba

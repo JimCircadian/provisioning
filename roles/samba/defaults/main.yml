@@ -1,0 +1,6 @@
+---
+samba_shares: []
+samba_enable_service: true
+
+samba_users: []
+samba_user_list: []

@@ -1,0 +1,72 @@
+---
+- import_role: name=robertdebock.bootstrap
+
+- name:     Set hostname to "{{ base_hostname }}"
+  ansible.builtin.hostname:
+    name: "{{ base_hostname }}"
+
+- name:     Install RPMFusion
+  ansible.builtin.dnf:
+    name:   "{{ item }}"
+    disable_gpg_check: true
+    state:  installed
+  when: ansible_pkg_mgr != "yum"
+  with_items:
+    - https://download1.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+    - https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm
+  tags:
+    - base-packages
+
+- name:     Install default packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state:  installed
+  with_items:
+    - "{{ base_packages }}"
+    - "{{ base_additional_packages }}"
+  tags:
+    - base-packages
+  ignore_errors:  true
+
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name:     Setup open ports
+  ansible.posix.firewalld:
+    port:   "{{ item }}"
+    state:  enabled
+    permanent:  yes
+  with_items: "{{ base_firewall_ports }}"
+
+- name:     Enable firewall
+  ansible.builtin.service:
+    name:   firewalld
+    state:  started
+
+- name:     Reload firewall
+  ansible.builtin.command:  firewall-cmd --reload
+
+- import_role: name=singleplatform-eng.users
+- import_role: name=geerlingguy.repo-epel
+- import_role: name=geerlingguy.repo-remi
+- import_role: name=geerlingguy.ntp
+- import_role: name=arillso.logrotate
+- import_role: name=devsec.hardening.ssh_hardening
+  vars:
+    sshd_custom_options:
+      - "AcceptEnv LANG"
+  tags:
+    - hardening
+
+#  tags:
+#    - logrotate
+
+# # TODO: Use caution to bring these settings in, ensure functionality works first
+# # then review their configurations
+# # TODO: SETTINGS DOES NOT WORK https://repo.ius.io/ius-release-el7.rpm REQUIRED
+# #  - linuxhq.ius
+# #  - dev-sec.os-hardening
+
+#    - geerlingguy.postfix
