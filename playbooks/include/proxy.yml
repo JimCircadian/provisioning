@@ -1,4 +1,14 @@
 ---
+- name: Deploy haproxy ratemap
+  copy:
+    dest: /etc/haproxy/api.rates.map
+    content: "{{ api_ratemap }}"
+    owner: root
+    group: root
+    mode: 0640
+  when: api_ratemap is defined
+  tags: haproxy
+
 # VMs are not registered via libvirt DHCP yet
 # We must set up the http frontend to field requests for the ACME requests
 - import_role:   name=uoi-io.haproxy
