@@ -23,14 +23,10 @@
 
     - import_role: name=geerlingguy.postgresql
       tags: data
-      #vars:
-        #ansible_python_interpreter: /usr/bin/python3
-        # postgres_users_no_log: false
 
     - import_role: name=idNoRD.listmonk
       tags: listmonk
 
-    # TODO: https://docs.librephotos.com/docs/installation/unified-deployment
     - import_tasks:  include/photos.yml
       when: photos_enable
       tags:
